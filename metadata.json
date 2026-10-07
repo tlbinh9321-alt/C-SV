@@ -1,6 +1,0 @@
-{
-  "name": "C!SV STAR FINDER",
-  "description": "Theo Ánh Sao – Chạm Khát Khao | Trải nghiệm tương tác khám phá lá bài ngôi sao dành cho sinh viên C!SV 2026",
-  "requestFramePermissions": ["camera"],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
