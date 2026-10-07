@@ -2,24 +2,18 @@ import React, { useState, useRef } from 'react';
 import { motion } from 'motion/react';
 import { StarCardData } from '../types/card';
 import { Mascot } from './Mascot';
-import { 
-  Sparkles, Compass, Moon, Waves, CloudMoon, Eye, Feather, 
-  Footprints, Ship, Sunrise, Zap, Navigation, Globe, Flame,
-  FlaskConical, Palette, Music, SunDim, Share2, Lightbulb, 
-  GitMerge, Link, Radio, Smile, Heart, Star, Sun, Shield, 
-  Crown, Mountain, Layers, Anchor, Ruler, Building2, Wrench, 
-  Gem, Search, Lamp, MapPin, HelpCircle, Maximize2, Wind, 
-  BookOpen, PenTool, Volume2, MessageCircle
-} from 'lucide-react';
+import { ConstellationArt } from './ConstellationArt';
+import { CardBack } from './CardBack';
 
 interface StarCardProps {
   card: StarCardData;
   isFlipped?: boolean; // false = back, true = front (default true)
   interactive?: boolean; // 3D tilt on mouse hover
-  size?: 'sm' | 'md' | 'lg' | 'xl';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
   onClick?: () => void;
   showHolo?: boolean;
+  isLocked?: boolean;
 }
 
 export const StarCard: React.FC<StarCardProps> = ({
@@ -30,6 +24,7 @@ export const StarCard: React.FC<StarCardProps> = ({
   className = '',
   onClick,
   showHolo = true,
+  isLocked = false,
 }) => {
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
@@ -63,69 +58,12 @@ export const StarCard: React.FC<StarCardProps> = ({
   };
 
   const sizeClasses = {
+    xs: 'w-full aspect-[2/3] max-w-[210px] text-[10px]',
     sm: 'w-44 h-64 text-xs',
     md: 'w-56 h-80 text-sm',
     lg: 'w-72 h-[410px] text-base',
     xl: 'w-84 h-[480px] text-lg',
   }[size];
-
-  // Helper for rendering thematic cosmic glyphs based on illustration motif
-  const renderCardSymbol = () => {
-    const iconProps = { className: 'w-16 h-16 drop-shadow-[0_0_15px_rgba(255,255,255,0.7)]', strokeWidth: 1.5 };
-    switch (card.illustrationMotif) {
-      case 'comet': return <Zap {...iconProps} className="w-16 h-16 text-yellow-300 animate-pulse" />;
-      case 'nebula': return <CloudMoon {...iconProps} className="w-16 h-16 text-purple-300" />;
-      case 'aurora': return <Waves {...iconProps} className="w-16 h-16 text-cyan-300" />;
-      case 'stardust': return <Sparkles {...iconProps} className="w-16 h-16 text-amber-300" />;
-      case 'lunaris': return <Moon {...iconProps} className="w-16 h-16 text-sky-200" />;
-      case 'mirage': return <Eye {...iconProps} className="w-16 h-16 text-pink-300" />;
-      case 'serenity': return <Feather {...iconProps} className="w-16 h-16 text-emerald-200" />;
-      case 'pioneer': return <Footprints {...iconProps} className="w-16 h-16 text-cyan-300" />;
-      case 'compass': return <Compass {...iconProps} className="w-16 h-16 text-yellow-300" />;
-      case 'voyager': return <Ship {...iconProps} className="w-16 h-16 text-sky-300" />;
-      case 'horizon': return <Sunrise {...iconProps} className="w-16 h-16 text-orange-300" />;
-      case 'meteor': return <Zap {...iconProps} className="w-16 h-16 text-amber-400" />;
-      case 'wayfinder': return <Navigation {...iconProps} className="w-16 h-16 text-teal-300" />;
-      case 'orbit': return <Globe {...iconProps} className="w-16 h-16 text-indigo-300" />;
-      case 'prism': return <Sparkles {...iconProps} className="w-16 h-16 text-rose-300" />;
-      case 'spark': return <Flame {...iconProps} className="w-16 h-16 text-orange-400" />;
-      case 'alchemist': return <FlaskConical {...iconProps} className="w-16 h-16 text-violet-300" />;
-      case 'canvas': return <Palette {...iconProps} className="w-16 h-16 text-pink-300" />;
-      case 'harmony': return <Music {...iconProps} className="w-16 h-16 text-teal-300" />;
-      case 'eclipse': return <SunDim {...iconProps} className="w-16 h-16 text-amber-300" />;
-      case 'constellation': return <Share2 {...iconProps} className="w-16 h-16 text-sky-300" />;
-      case 'beacon': return <Lightbulb {...iconProps} className="w-16 h-16 text-yellow-300" />;
-      case 'weaver': return <GitMerge {...iconProps} className="w-16 h-16 text-rose-300" />;
-      case 'bridger': return <Link {...iconProps} className="w-16 h-16 text-emerald-300" />;
-      case 'resonance': return <Radio {...iconProps} className="w-16 h-16 text-purple-300" />;
-      case 'symphony': return <Smile {...iconProps} className="w-16 h-16 text-amber-300" />;
-      case 'embrace': return <Heart {...iconProps} className="w-16 h-16 text-pink-300" />;
-      case 'polaris': return <Star {...iconProps} className="w-18 h-18 text-yellow-300 animate-spin" style={{ animationDuration: '20s' }} />;
-      case 'solaris': return <Sun {...iconProps} className="w-16 h-16 text-amber-400" />;
-      case 'guardian': return <Shield {...iconProps} className="w-16 h-16 text-blue-300" />;
-      case 'crown': return <Crown {...iconProps} className="w-16 h-16 text-yellow-300" />;
-      case 'flame': return <Flame {...iconProps} className="w-16 h-16 text-rose-400" />;
-      case 'summit': return <Mountain {...iconProps} className="w-16 h-16 text-indigo-300" />;
-      case 'foundation': return <Layers {...iconProps} className="w-16 h-16 text-emerald-300" />;
-      case 'anchor': return <Anchor {...iconProps} className="w-16 h-16 text-sky-400" />;
-      case 'architect': return <Ruler {...iconProps} className="w-16 h-16 text-cyan-300" />;
-      case 'pillar': return <Building2 {...iconProps} className="w-16 h-16 text-teal-300" />;
-      case 'craftsman': return <Wrench {...iconProps} className="w-16 h-16 text-orange-300" />;
-      case 'bedrock': return <Gem {...iconProps} className="w-16 h-16 text-slate-300" />;
-      case 'telescope': return <Search {...iconProps} className="w-16 h-16 text-indigo-300" />;
-      case 'lantern': return <Lamp {...iconProps} className="w-16 h-16 text-amber-300" />;
-      case 'odyssey': return <MapPin {...iconProps} className="w-16 h-16 text-emerald-300" />;
-      case 'labyrinth': return <HelpCircle {...iconProps} className="w-16 h-16 text-purple-300" />;
-      case 'reflection': return <Maximize2 {...iconProps} className="w-16 h-16 text-sky-300" />;
-      case 'zephyr': return <Wind {...iconProps} className="w-16 h-16 text-teal-200" />;
-      case 'chronicler': return <BookOpen {...iconProps} className="w-16 h-16 text-orange-300" />;
-      case 'quill': return <PenTool {...iconProps} className="w-16 h-16 text-rose-300" />;
-      case 'echo': return <Volume2 {...iconProps} className="w-16 h-16 text-violet-300" />;
-      case 'taleweaver': return <MessageCircle {...iconProps} className="w-16 h-16 text-pink-300" />;
-      case 'concert': return <Sparkles {...iconProps} className="w-18 h-18 text-yellow-300 animate-pulse" />;
-      default: return <Star {...iconProps} className="w-16 h-16 text-yellow-300" />;
-    }
-  };
 
   return (
     <div
@@ -155,7 +93,7 @@ export const StarCard: React.FC<StarCardProps> = ({
         />
 
         {/* Card Body */}
-        <div className="relative w-full h-full rounded-[14px] bg-[#090d29] overflow-hidden flex flex-col justify-between p-4 z-10 border border-white/10">
+        <div className={`relative w-full h-full rounded-[14px] bg-[#090d29] overflow-hidden flex flex-col justify-between ${size === 'xs' ? 'p-2.5' : 'p-4'} z-10 border border-white/10`}>
           {isFlipped ? (
             /* FRONT OF CARD */
             <>
@@ -163,105 +101,99 @@ export const StarCard: React.FC<StarCardProps> = ({
               <div className="flex items-center justify-between text-xs tracking-wider z-10">
                 <div className="flex items-center gap-1.5 font-bold text-white/90">
                   <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-                  <span className="font-mono text-[11px] text-cyan-300">
+                  <span className={`font-mono text-cyan-300 ${size === 'xs' ? 'text-[9.5px]' : 'text-[11px]'}`}>
                     #{card.id < 10 ? `0${card.id}` : card.id}
                   </span>
                   <span className="text-white/40">/</span>
-                  <span className="text-[10px] text-pink-300 font-semibold uppercase">
+                  <span className={`text-pink-300 font-semibold uppercase ${size === 'xs' ? 'text-[8.5px]' : 'text-[10px]'}`}>
                     {card.rarity}
                   </span>
                 </div>
 
-                <div className="flex items-center gap-1 text-[11px] font-bold text-yellow-300">
+                <div className={`flex items-center gap-1 font-bold text-yellow-300 ${size === 'xs' ? 'text-[9.5px]' : 'text-[11px]'}`}>
                   <span>★</span>
                   <span className="font-mono">{card.starPower}%</span>
                 </div>
               </div>
 
               {/* Constellation Art Centerpiece */}
-              <div className="relative flex-1 my-2 flex flex-col items-center justify-center z-10">
+              <div className="relative flex-1 my-1 flex flex-col items-center justify-center z-10 overflow-hidden">
                 {/* Background Constellation Geometric Rings */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <div
-                    className="w-32 h-32 rounded-full border border-dashed border-white/15 animate-spin"
+                    className={`${size === 'xs' ? 'w-20 h-20' : 'w-32 h-32'} rounded-full border border-dashed border-white/15 animate-spin`}
                     style={{ animationDuration: '35s' }}
                   />
-                  <div className="w-24 h-24 rounded-full border border-white/10" />
+                  <div className={`${size === 'xs' ? 'w-14 h-14' : 'w-24 h-24'} rounded-full border border-white/10`} />
                   <div
-                    className="absolute w-40 h-40 rounded-full"
+                    className={`absolute ${size === 'xs' ? 'w-24 h-24' : 'w-40 h-40'} rounded-full`}
                     style={{
                       background: `radial-gradient(circle, ${card.colors.glow}25 0%, transparent 70%)`,
                     }}
                   />
                 </div>
 
-                {/* Main Glyph */}
-                <div className="relative z-10 p-4 rounded-2xl bg-white/5 backdrop-blur-xs border border-white/10">
-                  {renderCardSymbol()}
+                {/* Main Constellation Diagram */}
+                <div className={`relative z-10 ${size === 'xs' ? 'p-1' : 'p-2 sm:p-3'} rounded-2xl bg-white/[0.04] backdrop-blur-xs border border-white/10 flex items-center justify-center shadow-[inset_0_0_15px_rgba(255,255,255,0.05)]`}>
+                  <ConstellationArt
+                    motif={card.illustrationMotif}
+                    cardId={card.id}
+                    glowColor={card.colors.glow}
+                    primaryColor={card.colors.primary}
+                    size={size === 'xs' ? 'sm' : size === 'xl' ? 'lg' : 'md'}
+                  />
                 </div>
 
                 {/* Constellation Tag */}
-                <div className="mt-3 text-center">
-                  <span className="text-[10px] font-bold tracking-widest text-cyan-300 uppercase block">
+                <div className={`${size === 'xs' ? 'mt-1' : 'mt-3'} text-center`}>
+                  <span className={`font-bold tracking-widest text-cyan-300 uppercase block ${size === 'xs' ? 'text-[8.5px]' : 'text-[10px]'}`}>
                     CHÒM SAO
                   </span>
-                  <span className="text-sm font-extrabold text-white tracking-wide">
+                  <span className={`font-extrabold text-white tracking-wide ${size === 'xs' ? 'text-xs line-clamp-1' : 'text-sm'}`}>
                     {card.constellation}
                   </span>
                 </div>
               </div>
 
               {/* Card Footer Info */}
-              <div className="relative z-10 pt-2 border-t border-white/10 text-center">
-                <div className="text-[10px] tracking-widest text-amber-300 font-bold uppercase mb-0.5">
+              <div className={`relative z-10 ${size === 'xs' ? 'pt-1.5' : 'pt-2'} border-t border-white/10 text-center`}>
+                <div className={`tracking-widest text-amber-300 font-bold uppercase mb-0.5 ${size === 'xs' ? 'text-[8.5px]' : 'text-[10px]'}`}>
                   ✦ {card.keyword} ✦
                 </div>
-                <h3 className="font-display font-black text-lg text-white leading-tight tracking-wide">
+                <h3 className={`font-display font-black text-white leading-tight tracking-wide ${size === 'xs' ? 'text-sm line-clamp-1' : 'text-lg'}`}>
                   {card.name}
                 </h3>
-                <p className="text-[11px] text-slate-300 line-clamp-2 mt-1 leading-snug italic font-normal">
-                  "{card.shortMessage}"
-                </p>
+                {size !== 'xs' && (
+                  <p className="text-[11px] text-slate-300 line-clamp-2 mt-1 leading-snug italic font-normal">
+                    "{card.shortMessage}"
+                  </p>
+                )}
 
                 {/* Tiny C!SV Watermark at bottom */}
-                <div className="mt-2 text-[9px] font-extrabold tracking-widest text-white/40 flex items-center justify-center gap-1">
-                  <span>C!SV 2026</span>
-                  <span>·</span>
-                  <span>STAR FINDER</span>
-                </div>
-              </div>
-            </>
-          ) : (
-            /* BACK OF CARD */
-            <div className="w-full h-full flex flex-col items-center justify-center text-center relative p-3">
-              {/* Back Sacred Geometry Lines */}
-              <div className="absolute inset-3 rounded-xl border border-white/15 flex flex-col items-center justify-between p-3 pointer-events-none">
-                <div className="w-full flex justify-between text-[10px] text-cyan-300/60 font-mono">
-                  <span>✦ 2026</span>
-                  <span>✦ C!SV</span>
-                </div>
-                <div className="w-full flex justify-between text-[10px] text-pink-300/60 font-mono">
-                  <span>52 STARS</span>
-                  <span>FINDER ✦</span>
-                </div>
+                {size !== 'xs' && (
+                  <div className="mt-2 text-[9px] font-extrabold tracking-widest text-white/40 flex items-center justify-center gap-1">
+                    <span>C!SV 2026</span>
+                    <span>·</span>
+                    <span>STAR FINDER</span>
+                  </div>
+                )}
               </div>
 
-              {/* Center Seal featuring Mascot */}
-              <div className="relative z-10 flex flex-col items-center">
-                <div className="w-24 h-24 rounded-full border-2 border-yellow-300/60 flex items-center justify-center mb-2 bg-indigo-950/80 shadow-[0_0_25px_rgba(255,216,77,0.4)] p-2">
-                  <Mascot state="idle" size="sm" />
+              {/* Locked Overlay if not yet discovered */}
+              {isLocked && (
+                <div className="absolute inset-0 bg-[#05081f]/75 backdrop-blur-[2px] flex flex-col items-center justify-center z-30 p-2 text-center">
+                  <div className="w-8 h-8 rounded-full bg-slate-800/90 border border-white/20 flex items-center justify-center mb-1 text-slate-300">
+                    <span className="text-xs">🔒</span>
+                  </div>
+                  <span className="text-[9px] font-bold text-slate-300 uppercase tracking-wider">
+                    Chưa Thắp Sáng
+                  </span>
                 </div>
-                <div className="font-display font-black text-2xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-pink-300 tracking-wider">
-                  C!SV
-                </div>
-                <div className="text-[10px] font-bold tracking-widest text-cyan-200 uppercase mt-0.5">
-                  STAR FINDER
-                </div>
-                <div className="text-[9px] text-amber-200/80 mt-1 max-w-[140px] leading-tight">
-                  Theo Ánh Sao – Chạm Khát Khao
-                </div>
-              </div>
-            </div>
+              )}
+            </>
+          ) : (
+            /* VIBRANT 3D HOLOGRAPHIC CARD BACK */
+            <CardBack size={size} showHolo={showHolo} />
           )}
 
           {/* Holographic light sheen overlay */}

@@ -190,7 +190,7 @@ export const FaceScanExperience: React.FC<FaceScanExperienceProps> = ({
                 }}
                 className="text-xs text-slate-400 hover:text-cyan-300 py-2 px-4 transition-colors underline underline-offset-4 cursor-pointer"
               >
-                Quét không dùng camera
+                Bỏ qua, kết nối năng lượng ngay →
               </button>
             </div>
 
@@ -322,7 +322,7 @@ export const FaceScanExperience: React.FC<FaceScanExperienceProps> = ({
                 NHƯNG NGÔI SAO THẬT SỰ CỦA BẠN...
               </p>
               <p className="font-display font-bold text-xl text-white">
-                ĐANG CHỜ BẠN RÚT RA TỪ CUỐN SỔ KỲ DIỆU.
+                ĐANG CHỜ BẠN RÚT RA TỪ BỘ BÀI VŨ TRỤ.
               </p>
             </div>
 

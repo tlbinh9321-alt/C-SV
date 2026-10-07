@@ -1,35 +1,37 @@
 import React, { useEffect, useRef } from 'react';
 
-interface Star {
+interface CartoonStar {
   x: number;
   y: number;
-  radius: number;
+  size: number;
   baseAlpha: number;
   alpha: number;
   twinkleSpeed: number;
   color: string;
-  isCross: boolean;
+  type: 'diamond4' | 'round' | 'star5';
+  pulsePhase: number;
 }
 
-interface Stardust {
-  x: number;
-  y: number;
-  radius: number;
-  vx: number;
-  vy: number;
-  alpha: number;
-  color: string;
-}
-
-interface ShootingStar {
+interface CartoonShootingStar {
   x: number;
   y: number;
   length: number;
   speed: number;
   angle: number;
   alpha: number;
+  headSize: number;
   color: string;
   active: boolean;
+}
+
+interface StardustParticle {
+  x: number;
+  y: number;
+  size: number;
+  vx: number;
+  vy: number;
+  alpha: number;
+  color: string;
 }
 
 export const CosmicBackground: React.FC = () => {
@@ -42,7 +44,7 @@ export const CosmicBackground: React.FC = () => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    let animationId: number;
+    let animId: number;
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
 
@@ -53,135 +55,181 @@ export const CosmicBackground: React.FC = () => {
     };
     window.addEventListener('resize', handleResize);
 
-    // Color palette from reference artwork
-    const starColors = ['#ffffff', '#fffdf5', '#ffd84d', '#67e8f9', '#ff85b3', '#a5f3fc'];
+    // Palette strictly from Cartoon 2D references (dreamy cyan, pastel pink, soft gold, cream)
+    const cartoonColors = ['#fffdf5', '#ffd84d', '#ffea75', '#67e8f9', '#ff85b3', '#fed7aa'];
 
-    // Generate stars
-    const starCount = Math.min(160, Math.floor((width * height) / 8000));
-    const stars: Star[] = Array.from({ length: starCount }, () => ({
+    // Generate cartoon stars distributed across the full sky
+    const starCount = Math.min(140, Math.floor((width * height) / 9000));
+    const stars: CartoonStar[] = Array.from({ length: starCount }, () => {
+      const rand = Math.random();
+      const type: 'diamond4' | 'round' | 'star5' =
+        rand > 0.45 ? 'diamond4' : rand > 0.15 ? 'round' : 'star5';
+
+      return {
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: type === 'round' ? Math.random() * 2 + 1.2 : Math.random() * 4 + 2.8,
+        baseAlpha: Math.random() * 0.55 + 0.45,
+        alpha: Math.random() * Math.PI * 2,
+        twinkleSpeed: Math.random() * 0.025 + 0.015,
+        color: cartoonColors[Math.floor(Math.random() * cartoonColors.length)],
+        type,
+        pulsePhase: Math.random() * Math.PI * 2,
+      };
+    });
+
+    // Gentle drifting stardust particles
+    const stardustList: StardustParticle[] = Array.from({ length: 40 }, () => ({
       x: Math.random() * width,
       y: Math.random() * height,
-      radius: Math.random() * 1.8 + 0.4,
-      baseAlpha: Math.random() * 0.7 + 0.3,
-      alpha: Math.random(),
-      twinkleSpeed: Math.random() * 0.03 + 0.01,
-      color: starColors[Math.floor(Math.random() * starColors.length)],
-      isCross: Math.random() > 0.85,
-    }));
-
-    // Floating stardust drifting slowly upwards
-    const stardustList: Stardust[] = Array.from({ length: 45 }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      radius: Math.random() * 2 + 0.8,
-      vx: (Math.random() - 0.5) * 0.25,
-      vy: -(Math.random() * 0.4 + 0.15),
-      alpha: Math.random() * 0.6 + 0.2,
+      size: Math.random() * 2 + 1.2,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: -(Math.random() * 0.35 + 0.1),
+      alpha: Math.random() * 0.6 + 0.25,
       color: Math.random() > 0.5 ? '#ffd84d' : '#ff85b3',
     }));
 
-    // Occasional shooting star
-    let shootingStar: ShootingStar = {
+    // Cartoon shooting star with stylized tapered comic motion streak
+    let shootingStar: CartoonShootingStar = {
       x: 0,
       y: 0,
-      length: 140,
-      speed: 18,
-      angle: Math.PI / 4 + (Math.random() - 0.5) * 0.3,
+      length: 160,
+      speed: 15,
+      angle: Math.PI / 4,
       alpha: 0,
+      headSize: 5,
       color: '#ffffff',
       active: false,
     };
 
     let lastShootingStarTime = Date.now();
-    let nextShootingStarDelay = 5000 + Math.random() * 7000;
+    let nextShootingStarDelay = 5000 + Math.random() * 6000;
+
+    // Helper: Draw cute 4-pointed cartoon diamond star
+    const drawCartoon4PointStar = (cx: number, cy: number, r: number, color: string, alpha: number) => {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = color;
+
+      // Soft cartoon halo
+      ctx.shadowColor = color;
+      ctx.shadowBlur = r * 2.5;
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy - r * 1.5);
+      ctx.quadraticCurveTo(cx, cy, cx + r * 1.5, cy);
+      ctx.quadraticCurveTo(cx, cy, cx, cy + r * 1.5);
+      ctx.quadraticCurveTo(cx, cy, cx - r * 1.5, cy);
+      ctx.quadraticCurveTo(cx, cy, cx, cy - r * 1.5);
+      ctx.closePath();
+      ctx.fill();
+
+      // Bright white inner core
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(cx, cy, r * 0.35, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    };
+
+    // Helper: Draw 5-pointed rounded cartoon star
+    const drawCartoon5PointStar = (cx: number, cy: number, r: number, color: string, alpha: number) => {
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      ctx.fillStyle = color;
+      ctx.shadowColor = color;
+      ctx.shadowBlur = r * 2;
+
+      ctx.beginPath();
+      const points = 5;
+      const step = Math.PI / points;
+      let angle = -Math.PI / 2;
+
+      for (let i = 0; i < 2 * points; i++) {
+        const radius = i % 2 === 0 ? r : r * 0.48;
+        const x = cx + Math.cos(angle) * radius;
+        const y = cy + Math.sin(angle) * radius;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+        angle += step;
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    };
+
+    let time = 0;
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
+      time += 0.005;
 
-      // Deep space background gradient
-      const bgGrad = ctx.createLinearGradient(0, 0, 0, height);
-      bgGrad.addColorStop(0, '#06091e');
-      bgGrad.addColorStop(0.5, '#090e2b');
-      bgGrad.addColorStop(1, '#050714');
-      ctx.fillStyle = bgGrad;
+      // 1. Deep Midnight Navy Cartoon Sky Gradient (Pure, seamless, borderless)
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, height);
+      skyGrad.addColorStop(0, '#06091e');
+      skyGrad.addColorStop(0.35, '#080d28');
+      skyGrad.addColorStop(0.7, '#0a1033');
+      skyGrad.addColorStop(1, '#050716');
+      ctx.fillStyle = skyGrad;
       ctx.fillRect(0, 0, width, height);
 
-      // Draw subtle pastel nebulae clouds (Top waves & corners like reference)
-      // Pastel Pink cloud at top
-      const pinkGlow = ctx.createRadialGradient(
-        width * 0.3, -50, 20,
-        width * 0.3, 0, width * 0.65
-      );
-      pinkGlow.addColorStop(0, 'rgba(255, 133, 179, 0.18)');
-      pinkGlow.addColorStop(0.5, 'rgba(255, 133, 179, 0.06)');
-      pinkGlow.addColorStop(1, 'rgba(255, 133, 179, 0)');
-      ctx.fillStyle = pinkGlow;
-      ctx.fillRect(0, 0, width, height * 0.6);
+      // 2. Soft, organic, seamless radial nebular blooms (NO borders, NO sharp lines)
+      ctx.save();
+      ctx.globalCompositeOperation = 'screen';
 
-      // Warm Yellow glow (Top-right & Bottom corners like reference)
-      const yellowGlow = ctx.createRadialGradient(
-        width * 0.85, 80, 10,
-        width * 0.85, 80, width * 0.45
-      );
-      yellowGlow.addColorStop(0, 'rgba(255, 216, 77, 0.22)');
-      yellowGlow.addColorStop(0.5, 'rgba(255, 216, 77, 0.07)');
-      yellowGlow.addColorStop(1, 'rgba(255, 216, 77, 0)');
-      ctx.fillStyle = yellowGlow;
-      ctx.fillRect(0, 0, width, height * 0.7);
+      // Nebula 1: Gentle cyan glow upper-left
+      const neb1X = width * 0.25 + Math.sin(time) * 40;
+      const neb1Y = height * 0.3 + Math.cos(time * 0.8) * 30;
+      const neb1Grad = ctx.createRadialGradient(neb1X, neb1Y, 0, neb1X, neb1Y, width * 0.45);
+      neb1Grad.addColorStop(0, 'rgba(0, 240, 255, 0.08)');
+      neb1Grad.addColorStop(0.5, 'rgba(0, 240, 255, 0.03)');
+      neb1Grad.addColorStop(1, 'rgba(0, 240, 255, 0)');
+      ctx.fillStyle = neb1Grad;
+      ctx.fillRect(0, 0, width, height);
 
-      // Cyan cosmic aura at center bottom
-      const cyanGlow = ctx.createRadialGradient(
-        width * 0.5, height * 0.85, 30,
-        width * 0.5, height * 0.85, width * 0.55
-      );
-      cyanGlow.addColorStop(0, 'rgba(0, 240, 255, 0.14)');
-      cyanGlow.addColorStop(0.6, 'rgba(0, 240, 255, 0.03)');
-      cyanGlow.addColorStop(1, 'rgba(0, 240, 255, 0)');
-      ctx.fillStyle = cyanGlow;
-      ctx.fillRect(0, height * 0.3, width, height * 0.7);
+      // Nebula 2: Pastel pink warm glow lower-right
+      const neb2X = width * 0.75 + Math.cos(time * 0.9) * 40;
+      const neb2Y = height * 0.65 + Math.sin(time * 0.7) * 35;
+      const neb2Grad = ctx.createRadialGradient(neb2X, neb2Y, 0, neb2X, neb2Y, width * 0.5);
+      neb2Grad.addColorStop(0, 'rgba(255, 133, 179, 0.07)');
+      neb2Grad.addColorStop(0.5, 'rgba(255, 216, 77, 0.025)');
+      neb2Grad.addColorStop(1, 'rgba(255, 133, 179, 0)');
+      ctx.fillStyle = neb2Grad;
+      ctx.fillRect(0, 0, width, height);
 
-      // Render stars with twinkling
+      ctx.restore();
+
+      // 3. Draw 2D Cartoon Stars
       for (let i = 0; i < stars.length; i++) {
         const s = stars[i];
         s.alpha += s.twinkleSpeed;
-        const currentAlpha = s.baseAlpha * (0.6 + Math.sin(s.alpha) * 0.4);
+        const currentAlpha = s.baseAlpha * (0.65 + Math.sin(s.alpha) * 0.35);
 
-        ctx.save();
-        ctx.fillStyle = s.color;
-        ctx.globalAlpha = Math.max(0.1, Math.min(1, currentAlpha));
-
-        if (s.isCross) {
-          // 4-pointed star sparkle
-          const r = s.radius * 2.5;
-          ctx.beginPath();
-          ctx.moveTo(s.x, s.y - r);
-          ctx.lineTo(s.x + r * 0.3, s.y);
-          ctx.lineTo(s.x, s.y + r);
-          ctx.lineTo(s.x - r * 0.3, s.y);
-          ctx.closePath();
-          ctx.fill();
-
-          ctx.beginPath();
-          ctx.moveTo(s.x - r, s.y);
-          ctx.lineTo(s.x, s.y + r * 0.3);
-          ctx.lineTo(s.x + r, s.y);
-          ctx.lineTo(s.x, s.y - r * 0.3);
-          ctx.closePath();
-          ctx.fill();
+        if (s.type === 'diamond4') {
+          drawCartoon4PointStar(s.x, s.y, s.size, s.color, currentAlpha);
+        } else if (s.type === 'star5') {
+          drawCartoon5PointStar(s.x, s.y, s.size, s.color, currentAlpha);
         } else {
-          // Standard circular star
+          // Cute circular star with soft aura
+          ctx.save();
+          ctx.globalAlpha = currentAlpha;
+          ctx.fillStyle = s.color;
+          ctx.shadowColor = s.color;
+          ctx.shadowBlur = s.size * 2;
           ctx.beginPath();
-          ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+          ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
           ctx.fill();
+          ctx.restore();
         }
-        ctx.restore();
       }
 
-      // Render drifting stardust
+      // 4. Floating Drifting Stardust
       for (let i = 0; i < stardustList.length; i++) {
         const p = stardustList[i];
         p.x += p.vx;
         p.y += p.vy;
+
         if (p.y < -10) {
           p.y = height + 10;
           p.x = Math.random() * width;
@@ -190,94 +238,90 @@ export const CosmicBackground: React.FC = () => {
         if (p.x > width + 10) p.x = -10;
 
         ctx.save();
-        ctx.fillStyle = p.color;
         ctx.globalAlpha = p.alpha;
+        ctx.fillStyle = p.color;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
       }
 
-      // Check shooting star trigger
+      // 5. Cartoon 2D Shooting Star with Stylized Comic Streak Lines
       const now = Date.now();
       if (!shootingStar.active && now - lastShootingStarTime > nextShootingStarDelay) {
         shootingStar = {
-          x: Math.random() * (width * 0.7),
-          y: Math.random() * (height * 0.4),
-          length: 120 + Math.random() * 80,
-          speed: 16 + Math.random() * 8,
-          angle: Math.PI / 4 + (Math.random() - 0.5) * 0.25,
+          x: Math.random() * (width * 0.65),
+          y: Math.random() * (height * 0.35),
+          length: 130 + Math.random() * 80,
+          speed: 14 + Math.random() * 6,
+          angle: Math.PI / 4 + (Math.random() - 0.5) * 0.2,
           alpha: 1,
-          color: Math.random() > 0.4 ? '#ffffff' : '#ffd84d',
+          headSize: 5.5,
+          color: Math.random() > 0.4 ? '#ffd84d' : '#ffffff',
           active: true,
         };
         lastShootingStarTime = now;
-        nextShootingStarDelay = 6000 + Math.random() * 9000;
+        nextShootingStarDelay = 5000 + Math.random() * 7000;
       }
 
-      // Render shooting star
       if (shootingStar.active) {
         const tailX = shootingStar.x - Math.cos(shootingStar.angle) * shootingStar.length;
         const tailY = shootingStar.y - Math.sin(shootingStar.angle) * shootingStar.length;
 
-        const starGrad = ctx.createLinearGradient(tailX, tailY, shootingStar.x, shootingStar.y);
-        starGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
-        starGrad.addColorStop(0.7, 'rgba(0, 240, 255, 0.4)');
-        starGrad.addColorStop(1, 'rgba(255, 255, 255, 0.95)');
-
         ctx.save();
-        ctx.strokeStyle = starGrad;
-        ctx.lineWidth = 2.5;
+        // Cartoon 2D Speed lines: tapered stroke
+        const streakGrad = ctx.createLinearGradient(tailX, tailY, shootingStar.x, shootingStar.y);
+        streakGrad.addColorStop(0, 'rgba(255, 255, 255, 0)');
+        streakGrad.addColorStop(0.5, 'rgba(103, 232, 249, 0.5)');
+        streakGrad.addColorStop(1, 'rgba(255, 255, 255, 0.95)');
+
+        // Center streak
+        ctx.strokeStyle = streakGrad;
+        ctx.lineWidth = 3.5;
         ctx.lineCap = 'round';
         ctx.beginPath();
         ctx.moveTo(tailX, tailY);
         ctx.lineTo(shootingStar.x, shootingStar.y);
         ctx.stroke();
 
-        // Glowing star head
-        ctx.fillStyle = shootingStar.color;
-        ctx.shadowColor = '#00f0ff';
-        ctx.shadowBlur = 12;
+        // Upper mini secondary streak
+        const offsetDist = 5;
+        const perpX = -Math.sin(shootingStar.angle) * offsetDist;
+        const perpY = Math.cos(shootingStar.angle) * offsetDist;
+
+        ctx.lineWidth = 1.8;
         ctx.beginPath();
-        ctx.arc(shootingStar.x, shootingStar.y, 3, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.moveTo(tailX + perpX + 30 * Math.cos(shootingStar.angle), tailY + perpY + 30 * Math.sin(shootingStar.angle));
+        ctx.lineTo(shootingStar.x + perpX, shootingStar.y + perpY);
+        ctx.stroke();
+
+        // Chubby cartoon star head
+        drawCartoon4PointStar(shootingStar.x, shootingStar.y, shootingStar.headSize, shootingStar.color, 1);
         ctx.restore();
 
         shootingStar.x += Math.cos(shootingStar.angle) * shootingStar.speed;
         shootingStar.y += Math.sin(shootingStar.angle) * shootingStar.speed;
 
-        if (shootingStar.x > width + 100 || shootingStar.y > height + 100) {
+        if (shootingStar.x > width + 120 || shootingStar.y > height + 120) {
           shootingStar.active = false;
         }
       }
 
-      animationId = requestAnimationFrame(render);
+      animId = requestAnimationFrame(render);
     };
 
     render();
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(animationId);
+      cancelAnimationFrame(animId);
     };
   }, []);
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+      {/* 2D Canvas Starfield & Seamless Atmosphere */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
-      {/* Subtle organic cloud gradient overlays at top and bottom edges */}
-      <div 
-        className="absolute top-0 left-0 right-0 h-48 opacity-40 mix-blend-screen pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse 90% 60% at 50% 0%, rgba(255,133,179,0.3), rgba(255,216,77,0.15), transparent 75%)',
-        }}
-      />
-      <div 
-        className="absolute bottom-0 left-0 right-0 h-64 opacity-35 mix-blend-screen pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse 80% 50% at 50% 100%, rgba(0,240,255,0.25), rgba(255,133,179,0.1), transparent 70%)',
-        }}
-      />
     </div>
   );
 };

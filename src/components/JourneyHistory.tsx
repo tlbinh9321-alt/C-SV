@@ -64,7 +64,7 @@ export const JourneyHistory: React.FC<JourneyHistoryProps> = ({
             Hành trình của bạn vừa bắt đầu
           </h3>
           <p className="text-xs text-slate-300 mb-6 leading-relaxed">
-            Bạn chưa rút lá bài nào. Hãy bước vào cuốn sổ kỳ diệu để tìm thấy ngôi sao đầu tiên đang chờ đón bạn!
+            Bạn chưa rút lá bài nào. Hãy bước vào vòng quay chiêm tinh C!SV để tìm thấy ngôi sao đầu tiên đang chờ đón bạn!
           </p>
           <button
             onClick={() => {

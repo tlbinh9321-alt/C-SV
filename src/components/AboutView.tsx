@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Sparkles, ArrowRight, Star, Heart, Compass, Shield, BookOpen } from 'lucide-react';
+import { Sparkles, ArrowRight, Star, Heart, Compass, Shield } from 'lucide-react';
 import { ARCHETYPES_META } from '../data/cards';
 import { Mascot } from './Mascot';
 import { soundEngine } from '../utils/audio';
@@ -112,7 +112,7 @@ export const AboutView: React.FC<AboutViewProps> = ({ onStartExperience }) => {
             Sẵn Sàng Gặp Ngôi Sao Của Bạn?
           </h2>
           <p className="text-xs sm:text-sm text-slate-300 mb-8 leading-relaxed">
-            52 chòm sao đang xoay vần trên bầu trời C!SV 2026. Hãy để cuốn sổ kỳ diệu mở ra và trao cho bạn thông điệp truyền cảm hứng hôm nay.
+            52 chòm sao đang xoay vần trên bầu trời C!SV 2026. Hãy để các lá bài tinh tú hội tụ và trao cho bạn thông điệp truyền cảm hứng hôm nay.
           </p>
 
           <button

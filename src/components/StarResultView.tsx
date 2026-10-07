@@ -300,7 +300,7 @@ export const StarResultView: React.FC<StarResultViewProps> = ({
           className="px-6 py-3.5 rounded-full font-bold text-xs sm:text-sm tracking-wider uppercase bg-gradient-to-r from-pink-500 via-rose-400 to-amber-300 text-slate-950 shadow-[0_0_25px_rgba(255,133,179,0.5)] hover:scale-105 active:scale-95 transition-all flex items-center gap-2 cursor-pointer"
         >
           <Download className="w-4 h-4" />
-          <span>TẢI STORY (1080×1920)</span>
+          <span>TẢI ẢNH KÈM THÔNG ĐIỆP (1080×1920)</span>
         </button>
 
         {/* Copy Share Quote */}

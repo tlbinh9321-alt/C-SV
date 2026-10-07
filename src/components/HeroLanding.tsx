@@ -1,8 +1,8 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { Sparkles, ArrowRight, Compass } from 'lucide-react';
-import { StarFinderHeroLogo } from './StarFinderHeroLogo';
-import { MagicNotebook } from './MagicNotebook';
+import { FloatingCosmicCardHero } from './FloatingCosmicCardHero';
+import { LogoCSVHeader } from './LogoCSVHeader';
 import { soundEngine } from '../utils/audio';
 
 interface HeroLandingProps {
@@ -15,69 +15,45 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
   onExploreUniverse,
 }) => {
   return (
-    <div className="relative min-h-[calc(100vh-5rem)] flex flex-col justify-between overflow-hidden px-4 sm:px-6 py-6 sm:py-10">
+    <div className="relative min-h-[calc(100vh-5rem)] flex flex-col justify-between overflow-hidden px-4 sm:px-6 py-4 sm:py-8">
       {/* Central Hero Block */}
       <div className="max-w-5xl mx-auto w-full flex flex-col items-center text-center my-auto">
-        {/* Top Kicker Label */}
+        {/* Top Brand Lockup directly matching user request and Image 1 */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-950/80 border border-cyan-400/35 text-cyan-300 text-xs font-bold uppercase tracking-widest mb-4 shadow-[0_0_20px_rgba(0,240,255,0.25)]"
+          transition={{ duration: 0.6 }}
+          className="mb-4"
         >
-          <span className="w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-          <span>CHƯƠNG TRÌNH CHÀO! SINH VIÊN 2026</span>
-          <span className="text-yellow-300">✦</span>
+          <LogoCSVHeader />
         </motion.div>
 
-        {/* --- Image 1 Feature: Authentic 3D Star Finder Key Visual --- */}
+        {/* Large Floating Cosmic Card Showcase */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, delay: 0.1 }}
-          className="relative mb-4 cursor-pointer"
-          onClick={() => {
-            soundEngine.playSparkle();
-            onStartScan();
-          }}
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.15, ease: 'easeOut' }}
+          className="relative z-10 my-2"
         >
-          <StarFinderHeroLogo />
+          <FloatingCosmicCardHero onStartScan={onStartScan} />
         </motion.div>
 
+        {/* Inspirational Subtitle */}
         <motion.p
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-sm sm:text-base text-slate-300 max-w-xl mx-auto mb-6 leading-relaxed font-normal"
+          transition={{ duration: 0.6, delay: 0.25 }}
+          className="text-sm sm:text-base text-slate-300 max-w-xl mx-auto my-3 leading-relaxed font-normal"
         >
-          Bạn đang bước vào một vũ trụ nơi một ngôi sao đang chờ đón bạn. Hãy mở cuốn sổ kỳ diệu để tìm thấy thông điệp định danh của riêng mình.
+          Bạn đang bước vào một vũ trụ nơi một ngôi sao đang chờ đón bạn. Hãy rút lá bài định danh để chạm vào khát khao của riêng mình.
         </motion.p>
-
-        {/* Central Visual: The Magic Pastel Pink Notebook with Peeking Mascot */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="relative my-1 sm:my-3"
-        >
-          <MagicNotebook
-            isOpen={false}
-            isShuffling={false}
-            onDrawClick={() => {
-              soundEngine.playSparkle();
-              onStartScan();
-            }}
-            showDrawButton={false}
-            peekMascot={false}
-          />
-        </motion.div>
 
         {/* Primary CTA Buttons */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="flex flex-col sm:flex-row items-center gap-4 mt-6 z-20"
+          transition={{ duration: 0.6, delay: 0.35 }}
+          className="flex flex-col sm:flex-row items-center gap-4 mt-2 z-20"
         >
           {/* Main CTA */}
           <button
@@ -106,7 +82,7 @@ export const HeroLanding: React.FC<HeroLandingProps> = ({
         </motion.div>
 
         {/* Small floating reassurance */}
-        <div className="mt-8 text-xs text-slate-400 flex items-center gap-2">
+        <div className="mt-6 text-xs text-slate-400 flex items-center gap-2">
           <span className="text-yellow-300">✦</span>
           <span>52 lá bài độc bản</span>
           <span>·</span>

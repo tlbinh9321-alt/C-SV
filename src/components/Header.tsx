@@ -1,7 +1,6 @@
 import React from 'react';
-import { Volume2, VolumeX, Sparkles, Compass, History, BookOpen, Menu, X } from 'lucide-react';
+import { Volume2, VolumeX, Sparkles, Compass, History, Info, Menu, X } from 'lucide-react';
 import { soundEngine } from '../utils/audio';
-import { LogoCSV } from './LogoCSV';
 
 interface HeaderProps {
   currentView: 'landing' | 'scan' | 'draw' | 'result' | 'universe' | 'history' | 'about';
@@ -22,25 +21,13 @@ export const Header: React.FC<HeaderProps> = ({
     { id: 'landing', label: 'Khám Phá', icon: Sparkles },
     { id: 'universe', label: 'Vũ Trụ 52 Sao', icon: Compass },
     { id: 'history', label: 'Nhật Ký', icon: History },
-    { id: 'about', label: 'Về C!SV', icon: BookOpen },
+    { id: 'about', label: 'Ý Nghĩa C!SV', icon: Info },
   ] as const;
 
   return (
-    <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-[#070a1e]/90 border-b border-cyan-500/20 transition-all">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
-        {/* Zone 1: Authentic Brand Logo matching image 3 (LOGO CSV.png) */}
-        <button
-          onClick={() => {
-            soundEngine.playSparkle();
-            onNavigate('landing');
-          }}
-          className="flex items-center text-left group cursor-pointer hover:scale-[1.02] transition-transform"
-          aria-label="C!SV Star Finder Trang Chủ"
-        >
-          <LogoCSV size="md" showTagline={true} className="max-w-[190px] sm:max-w-[220px]" />
-        </button>
-
-        {/* Zone 2: Clean Text Navigation Links (Desktop) */}
+    <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-[#070a1e]/80 border-b border-white/5 transition-all">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
+        {/* Navigation Links (Desktop) */}
         <nav className="hidden md:flex items-center gap-7 text-sm font-semibold text-slate-300">
           {navLinks.map((link) => {
             const isActive = currentView === link.id;
