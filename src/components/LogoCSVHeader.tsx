@@ -9,9 +9,9 @@ export const LogoCSVHeader: React.FC<LogoCSVHeaderProps> = ({
 }) => {
   return (
     <div className={`flex flex-col items-center justify-center select-none ${className}`}>
-      {/* Top Banner: CHÀO SINH VIÊN 2026 */}
+      {/* Top Banner: CHÀO! SINH VIÊN 2026 */}
       <span className="font-display font-black tracking-widest text-[#ff9e3b] text-xs sm:text-sm md:text-base uppercase drop-shadow-[0_2px_10px_rgba(255,158,59,0.55)] mb-0.5">
-        CHÀO SINH VIÊN 2026
+        CHÀO! SINH VIÊN 2026
       </span>
 
       {/* Main Title: STAR FINDER (matching download story image style) */}

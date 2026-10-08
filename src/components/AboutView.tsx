@@ -11,18 +11,18 @@ interface AboutViewProps {
 
 export const AboutView: React.FC<AboutViewProps> = ({ onStartExperience }) => {
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 py-12">
+    <div className="w-full max-w-5xl mx-auto px-4 py-12">
       {/* Top Banner */}
       <div className="text-center mb-12">
         <Mascot state="idle" size="md" className="mb-4" />
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-950/80 border border-cyan-400/30 text-cyan-300 text-xs font-bold uppercase tracking-wider mb-3">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-cyan-950/80 border border-cyan-400/40 text-cyan-300 text-xs font-bold uppercase tracking-wider mb-3 shadow-[0_0_15px_rgba(0,240,255,0.25)]">
           <Sparkles className="w-3.5 h-3.5" />
           <span>Chào! Sinh Viên 2026</span>
         </div>
-        <h1 className="font-display font-black text-3xl sm:text-5xl text-white tracking-wide">
+        <h1 className="font-display font-black text-2xl sm:text-4xl md:text-5xl lg:text-[2.75rem] tracking-wide uppercase text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-sky-100 to-amber-300 drop-shadow-[0_4px_25px_rgba(0,240,255,0.6)] whitespace-nowrap" style={{ fontFamily: "'Be Vietnam Pro', 'Montserrat', sans-serif" }}>
           THEO ÁNH SAO – CHẠM KHÁT KHAO
         </h1>
-        <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto mt-3 leading-relaxed">
+        <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto mt-3.5 leading-relaxed">
           C!SV Star Finder là không gian tương tác nghệ thuật số được thiết kế để chào đón các tân sinh viên và đồng hành cùng các bạn trẻ bước vào cánh cổng đại học.
         </p>
       </div>

@@ -39,7 +39,7 @@ export const CardBack: React.FC<CardBackProps> = ({
         <div className="w-full flex justify-between items-center text-[9px] sm:text-[10px] text-yellow-300 drop-shadow-[0_0_6px_rgba(255,216,77,0.8)]">
           <span className="font-mono">✦</span>
           <span className="text-[7.5px] sm:text-[8.5px] tracking-widest text-[#ff9e3b] font-black uppercase">
-            CHÀO SINH VIÊN 2026
+            CHÀO! SINH VIÊN 2026
           </span>
           <span className="font-mono">✦</span>
         </div>
@@ -147,7 +147,7 @@ export const CardBack: React.FC<CardBackProps> = ({
         <div className="mt-2 text-center relative z-20 flex flex-col items-center">
           {/* Top Label */}
           <span className="text-[7.5px] sm:text-[8.5px] font-black tracking-widest text-[#ff9e3b] uppercase drop-shadow-[0_1px_4px_rgba(255,158,59,0.5)]">
-            CHÀO SINH VIÊN 2026
+            CHÀO! SINH VIÊN 2026
           </span>
 
           {/* Main Title: STAR FINDER */}

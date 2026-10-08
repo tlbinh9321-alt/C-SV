@@ -145,10 +145,10 @@ export const StoryGeneratorModal: React.FC<StoryGeneratorModalProps> = ({
                 }}
               />
 
-              {/* Top Header Branding: Chào Sinh Viên 2026, STAR FINDER, Theo ánh sao - Chạm Khát Khao */}
+              {/* Top Header Branding: Chào! Sinh Viên 2026, STAR FINDER, Theo ánh sao - Chạm Khát Khao */}
               <div className="relative z-10 flex flex-col items-center border-b border-white/15 pb-2.5 pt-1">
                 <span className="text-[10px] font-black tracking-widest text-[#ff9e3b] uppercase mb-0.5 drop-shadow-[0_1px_6px_rgba(255,158,59,0.5)]">
-                  CHÀO SINH VIÊN 2026
+                  CHÀO! SINH VIÊN 2026
                 </span>
                 <h2 className="font-display font-black text-xl sm:text-2xl tracking-wider uppercase text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-amber-300 drop-shadow-[0_2px_12px_rgba(0,240,255,0.6)] my-0.5">
                   STAR FINDER
