@@ -1,5 +1,4 @@
 import React from 'react';
-import { LogoCSV } from './LogoCSV';
 
 interface CardBackProps {
   className?: string;
@@ -40,7 +39,7 @@ export const CardBack: React.FC<CardBackProps> = ({
         <div className="w-full flex justify-between items-center text-[9px] sm:text-[10px] text-yellow-300 drop-shadow-[0_0_6px_rgba(255,216,77,0.8)]">
           <span className="font-mono">✦</span>
           <span className="text-[7.5px] sm:text-[8.5px] tracking-widest text-[#ff9e3b] font-black uppercase">
-            CHÀO! SINH VIÊN 2026
+            CHÀO SINH VIÊN 2026
           </span>
           <span className="font-mono">✦</span>
         </div>
@@ -144,22 +143,22 @@ export const CardBack: React.FC<CardBackProps> = ({
           <circle cx="188" cy="100" r="2.5" fill="#67e8f9" />
         </svg>
 
-        {/* Brandmark Section matching the exact Home Header branding */}
-        <div className="mt-2.5 text-center relative z-20 flex flex-col items-center">
-          {/* Authentic C!SV Logo (Vector with cyan letters & gold star !) */}
-          <LogoCSV size={isCompact ? 'sm' : 'md'} showTagline={false} />
-
-          {/* Subtitle STAR FINDER */}
-          <span className="text-[9px] sm:text-[10px] md:text-[11px] font-black tracking-widest text-amber-300 uppercase block mt-1 drop-shadow-[0_1px_4px_rgba(255,216,77,0.6)]">
-            STAR FINDER
+        {/* Brandmark Section: Exact match with Story Image Header */}
+        <div className="mt-2 text-center relative z-20 flex flex-col items-center">
+          {/* Top Label */}
+          <span className="text-[7.5px] sm:text-[8.5px] font-black tracking-widest text-[#ff9e3b] uppercase drop-shadow-[0_1px_4px_rgba(255,158,59,0.5)]">
+            CHÀO SINH VIÊN 2026
           </span>
 
+          {/* Main Title: STAR FINDER */}
+          <h2 className="font-display font-black text-sm sm:text-base md:text-lg tracking-wider uppercase text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-amber-300 drop-shadow-[0_2px_10px_rgba(0,240,255,0.6)] my-0.5">
+            STAR FINDER
+          </h2>
+
           {/* Slogan */}
-          {!isCompact && (
-            <span className="text-[7px] sm:text-[8px] font-bold tracking-wider text-cyan-200/95 uppercase block mt-0.5">
-              ✦ THEO ÁNH SAO – CHẠM KHÁT KHAO ✦
-            </span>
-          )}
+          <span className="text-[6.5px] sm:text-[7.5px] font-extrabold tracking-[0.18em] text-[#ff9e3b] uppercase drop-shadow-[0_1px_4px_rgba(255,158,59,0.5)]">
+            ✦ THEO ÁNH SAO – CHẠM KHÁT KHAO ✦
+          </span>
         </div>
       </div>
 

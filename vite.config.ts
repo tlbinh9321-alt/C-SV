@@ -5,7 +5,6 @@ import { defineConfig } from 'vite';
 
 export default defineConfig(() => {
   return {
-    base: '/C-SV/', // Bạn chèn thêm dòng này vào đây
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
